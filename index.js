@@ -1,63 +1,35 @@
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const path = require('path');
 const express = require('express');
-const app = express();
+const mysql= require('mysql');
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World!');
-//   console.log('Get Request!');
-// });
-
-
-app.listen('443', () => {
-    console.log('Server started on port 443');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'admin',
+  password : 'engage12!@',
+  database : 'appdata'
 });
 
-// var mysql= require('mysql');
+connection.connect((err) => {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+  console.log('connected as id ' + connection.threadId);
+});
 
-// var connection = mysql.createConnection({
-//   host     : 'localhost',
-//   user     : 'admin',
-//   password : 'engage12!@',
-//   database : 'appdata'
-// });
+const app = express();
 
-// connection.connect((err) => {
-//   if (err) {
-//     console.error('error connecting: ' + err.stack);
-//     return;
-//   }
-//   console.log('connected as id ' + connection.threadId);
-// });
-
-// // connection.query('INSERT into users VALUES (0, "User1", "Salutations!", "", "user1", "user1@salutations.com", "2022/07/08");', (error, results, fields) => {
-// //   if(error) throw error;
-// //   console.log(results);
-// // });
-
-// connection.query('SELECT * from users', (error, results, fields) => {
-//     if(error) throw error;
-//     console.log(results);
-// });
-
-// connection.query('SELECT * from rooms', (error, results, fields) => {
-//     if(error) throw error;
-//     console.log(results);
-// });
-
-// connection.query('SELECT * from participate', (error, results, fields) => {
-//     if(error) throw error;
-//     console.log(results);
-// });
-
-// connection.query('SELECT * from messages', (error, results, fields) => {
-//     if(error) throw error;
-//     console.log(results);
-// });
-
-// connection.end();
-
-
-
-
+app.get('/fetchusers', (req, res) => {
+    connection.query('SELECT * from users', (error, results, fields) => {
+        if(error) throw error;
+        res.statusCode = 200;
+        res.send(results);
+        console.log(results);
+    });
+});
 
 // app.get('/adduser1', (req, res) => {
 //     let user = {name: 'User1', profile_word: 'Salutations Everybody!!', profile_pic: '', user_id: 'user1', email: 'user1@salutations.com', birthdate: '2022/07/07'};
@@ -87,4 +59,43 @@ app.listen('443', () => {
 //         req.send('Users fetched...');
 //     });
 // });
+
+app.listen(80, () => {
+    console.log('Server started at port 80');
+});
+
+
+
+
+// connection.query('INSERT into users VALUES (0, "User1", "Salutations!", "", "user1@salutations.com", "", "2022/07/08");', (error, results, fields) => {
+//   if(error) throw error;
+//   console.log(results);
+// });
+
+// connection.query('SELECT * from rooms', (error, results, fields) => {
+//     if(error) throw error;
+//     console.log(results);
+// });
+
+// connection.query('SELECT * from participate', (error, results, fields) => {
+//     if(error) throw error;
+//     console.log(results);
+// });
+
+// connection.query('SELECT * from messages', (error, results, fields) => {
+//     if(error) throw error;
+//     console.log(results);
+// });
+
+// connection.end();
+
+
+
+
+
+
+
+
+
+
 
