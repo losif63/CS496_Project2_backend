@@ -12,6 +12,26 @@ var connection = mysql.createConnection({
   database : 'appdata'
 });
 
+const app = express();
+app.use(express.json());
+
+/////////////////////////////////////////////////////////////////////
+
+const userRouter = require('./routes/userrouter');
+app.use('/user', userRouter);
+
+const roomRouter = require('./routes/roomrouter');
+app.use('/room', roomRouter);
+
+const participateRouter = require('./routes/participaterouter');
+app.use('/participate', participateRouter);
+
+const messageRouter = require('./routes/messagerouter');
+app.use('/message', messageRouter);
+
+/////////////////////////////////////////////////////////////////////
+
+
 connection.connect((err) => {
   if (err) {
     console.error('error connecting: ' + err.stack);
@@ -19,46 +39,6 @@ connection.connect((err) => {
   }
   console.log('connected as id ' + connection.threadId);
 });
-
-const app = express();
-
-app.get('/fetchusers', (req, res) => {
-    connection.query('SELECT * from users', (error, results, fields) => {
-        if(error) throw error;
-        res.statusCode = 200;
-        res.send(results);
-        console.log(results);
-    });
-});
-
-// app.get('/adduser1', (req, res) => {
-//     let user = {name: 'User1', profile_word: 'Salutations Everybody!!', profile_pic: '', user_id: 'user1', email: 'user1@salutations.com', birthdate: '2022/07/07'};
-//     let sql = 'INSERT INTO users SET ?';
-//     let query = connection.query(sql, user, (err, result) => {
-//         if(err) throw err;
-//         console.log(result);
-//         res.send('User1 Added...');
-//     });
-// });
-
-// app.get('/adduser2', (req, res) => {
-//     let user = {name: 'User2', profile_word: 'Greetings Everyone!!', profile_pic: '', user_id: 'user2', email: 'user2@greetings.com', birthdate: '2022/07/07'};
-//     let sql = 'INSERT INTO users SET ?';
-//     let query = connection.query(sql, user, (err, result) => {
-//         if(err) throw err;
-//         console.log(result);
-//         res.send('User2 Added...');
-//     });
-// });
-
-// app.get('/getusers', (res, req) => {
-//     let sql = 'SELECT * from users';
-//     let query = connection.query(sql, (err, results) => {
-//         if(err) throw err;
-//         console.log(results);
-//         req.send('Users fetched...');
-//     });
-// });
 
 app.listen(80, () => {
     console.log('Server started at port 80');
