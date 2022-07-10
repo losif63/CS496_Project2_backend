@@ -1,6 +1,10 @@
 const express = require('express');
 const mysql= require('mysql');
+const bodyParser = require('body-parser');
+
 const participateRouter = express.Router();
+participateRouter.use(bodyParser.json());
+participateRouter.use(bodyParser.urlencoded({extended: false}));
 
 var connection = mysql.createConnection({
     host     : 'localhost',
@@ -33,6 +37,20 @@ participateRouter.post('/createparticipate', async (req, res) => {
         res.statusCode = 201;
         res.setHeader('Content-Type', 'text/json');
         res.json(user);
+    });
+});
+
+participateRouter.delete('/deleteparticipate/:pid', async (req, res) => {
+    await connection.query(`DELETE FROM participate WHERE p_id = ${req.params.pid}`, (error, result, fields) => {
+        console.log(result);
+        console.log(req.params.pid);
+        if(result.affectedRows === 0) {
+            res.statusCode = 404;
+            res.send(`Participate Id ${req.params.pid} Not Found`);
+        } else {
+            res.statusCode = 203;
+            res.send(`Participate Id ${req.params.pid} deleted`);
+        }
     });
 });
 

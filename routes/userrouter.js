@@ -42,5 +42,24 @@ userRouter.post('/createuser', async (req, res) => {
         });
 });
 
+userRouter.put('/updateuser', async (req, res) => {
+    console.log(req.body);
+    var user = {
+        u_id: req.body.u_id,
+        name: req.body.name,
+        profile_word: req.body.profile_word,
+        profile_pic: req.body.profile_pic,
+        email: req.body.email,
+        password: req.body.password,
+        birthdate: req.body.birthdate }
+
+    await connection.query(`UPDATE users SET name=${user.name}, profile_word=${user.profile_word}, profile_pic=${user.profile_pic}, email=${user.email}, password=${user.password}, birthdate=${user.birthdate} WHERE u_id = ${user.u_id}`, (error, result, fields) => {
+        console.log(result);
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/json');
+        res.json(user);
+    });
+});
+
 
 module.exports = userRouter;

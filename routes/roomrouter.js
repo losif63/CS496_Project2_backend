@@ -1,6 +1,10 @@
 const express = require('express');
 const mysql= require('mysql');
+const bodyParser = require('body-parser');
+
 const roomRouter = express.Router();
+roomRouter.use(bodyParser.json());
+roomRouter.use(bodyParser.urlencoded({extended: false}));
 
 var connection = mysql.createConnection({
     host     : 'localhost',
@@ -34,6 +38,20 @@ roomRouter.post('/createroom', async (req, res) => {
         res.statusCode = 201;
         res.setHeader('Content-Type', 'text/json');
         res.json(user);
+    });
+});
+
+roomRouter.delete('/deleteroom/:rid', async (req, res) => {
+    await connection.query(`DELETE FROM rooms WHERE r_id = ${req.params.rid}`, (error, result, fields) => {
+        console.log(result);
+        console.log(req.params.rid);
+        if(result.affectedRows === 0) {
+            res.statusCode = 404;
+            res.send(`Room Id ${req.params.rid} Not Found`);
+        } else {
+            res.statusCode = 203;
+            res.send(`Room Id ${req.params.rid} deleted`);
+        }
     });
 });
 
