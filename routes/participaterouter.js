@@ -36,7 +36,7 @@ participateRouter.post('/createparticipate', async (req, res) => {
         participate.p_id = result.insertId;
         res.statusCode = 201;
         res.setHeader('Content-Type', 'text/json');
-        res.json(user);
+        res.json(participate);
     });
 });
 

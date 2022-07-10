@@ -37,7 +37,7 @@ roomRouter.post('/createroom', async (req, res) => {
         room.r_id = result.insertId;
         res.statusCode = 201;
         res.setHeader('Content-Type', 'text/json');
-        res.json(user);
+        res.json(room);
     });
 });
 

@@ -29,6 +29,9 @@ app.use('/participate', participateRouter);
 const messageRouter = require('./routes/messagerouter');
 app.use('/message', messageRouter);
 
+const profilePicRouter = require('./routes/profilepicrouter');
+app.use('/profilepic', profilePicRouter);
+
 /////////////////////////////////////////////////////////////////////
 
 
