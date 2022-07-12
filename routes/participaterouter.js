@@ -42,15 +42,11 @@ participateRouter.post('/createparticipate', async (req, res) => {
 
 participateRouter.delete('/deleteparticipate/:pid', async (req, res) => {
     await connection.query(`DELETE FROM participate WHERE p_id = ${req.params.pid}`, (error, result, fields) => {
+        console.log(`participate delete result`);
         console.log(result);
         console.log(req.params.pid);
-        if(result.affectedRows === 0) {
-            res.statusCode = 404;
-            res.send(`Participate Id ${req.params.pid} Not Found`);
-        } else {
-            res.statusCode = 203;
-            res.send(`Participate Id ${req.params.pid} deleted`);
-        }
+        res.statusCode = 203;
+        res.send(`Participate Id ${req.params.pid} deleted`);
     });
 });
 
