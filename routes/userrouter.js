@@ -53,7 +53,7 @@ userRouter.put('/updateuser', async (req, res) => {
         password: req.body.password,
         birthdate: req.body.birthdate }
 
-    await connection.query(`UPDATE users SET name=${user.name}, profile_word=${user.profile_word}, profile_pic=${user.profile_pic}, email=${user.email}, password=${user.password}, birthdate=${user.birthdate} WHERE u_id = ${user.u_id}`, (error, result, fields) => {
+    await connection.query(`UPDATE users SET name='${user.name}', profile_word='${user.profile_word}', profile_pic='${user.profile_pic}', email='${user.email}', password='${user.password}', birthdate='${user.birthdate}' WHERE u_id = ${user.u_id}`, (error, result, fields) => {
         console.log(result);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/json');
